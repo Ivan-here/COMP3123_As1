@@ -13,7 +13,8 @@ const employeeSchema = new mongoose.Schema({
     position: String,
     salary: Number,
     date_of_joining: Date,
-    department: String
+    department: String,
+    profileImage: { type: String, default: null }
 }, { timestamps: { createdAt: 'created_at', updatedAt: 'updated_at' }});
 
 module.exports = {

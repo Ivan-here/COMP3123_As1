@@ -1,19 +1,26 @@
 const express = require('express');
+const path = require("path");
 
 const userRouter = require('./routes/user.routes');
 const empRouter  = require('./routes/employee.routes');
+const cors = require('cors');
 
 const app = express();
 
+app.use(cors({ origin: 'http://localhost:3000', credentials: true }));
+
 app.use(express.json());
+
+app.use(
+    "/uploaded",
+    express.static(path.join(__dirname, "uploaded"))
+);
 
 app.get('/health', (_req, res) => res.json({ ok: true }));
 
-// Mount routers (no CORS/morgan)
 app.use('/api/v1/user', userRouter);
 app.use('/api/v1/emp',  empRouter);
 
-// 404 + basic error JSON
 app.use((req, res) => res.status(404).json({ status: false, message: 'Route not found' }));
 app.use((err, req, res, next) => {
     console.error(err);
